@@ -8,7 +8,7 @@ based on input received from an arduino board.
     ```bash
     python -m venv venv && source venv/bin/activate
     ```
-    For Windows:
+    For Windows (powershell):
     ```powershell
     python -m venv venv & .\venv\Scripts\Activate.ps1
     ```
