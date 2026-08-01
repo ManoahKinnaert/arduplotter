@@ -4,7 +4,7 @@ incoming signals.
 """
 
 from PySide6.QtCore import QObject  
-from pyfirmata2 import Arduino
+from pyfirmata2 import Arduino, Pin
 
 from .dynamic_signal import DynamicSignal
 
@@ -62,4 +62,15 @@ class ArduinoListener(QObject):
 
     def sampling_off(self): self.board.samplingOff()
 
-    def quit(self): self.board.exit() 
+    def quit(self): self.board.exit()
+
+    def list_analog_pins(self): return self.board.analog.copy()
+
+    def list_digital_pins(self): return self.board.digital.copy()
+
+    def get_analog_pin(self, number: int): return self.board.analog[number]
+
+    def get_digital_pin(self, number: int): return self.board.digital[number]
+
+    @staticmethod
+    def pin_supports_pwm(pin: Pin): return pin.PWM_CAPABLE
