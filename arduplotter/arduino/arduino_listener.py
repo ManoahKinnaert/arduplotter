@@ -1,21 +1,37 @@
 """
 This file contains the ArduinoListener class, to help listen to 
-incomming signals.
+incoming signals.
 """
 
-from PySide6.QtCore import QObject, Signal 
+from PySide6.QtCore import QObject  
 from pyfirmata2 import Arduino
 
 from .dynamic_signal import DynamicSignal
 
+
 class ArduinoListener(QObject):
+    """
+    An arduino listener class, to help listen to incomming signals.
+    It also helps with gui callback function so we can dynamically update our charts.
+    """
     def __init__(self, auto_detect: bool=True, port: str=None, sampling_rate: int=500):
+        """
+        ==== Arguments ====
+        auto_detect: bool -> do we want to autodetect the arduino board or not, 
+        by default set to True
+
+        port: str -> by default None because we want to autodetect, if not it can't be None and must
+        be of type str
+
+        sampling_rate: int -> an integer representing the sampling rate of the board in miliseconds,
+        it is equal to 500ms by default
+        """
         super().__init__()
 
         if auto_detect:
             self.port = Arduino.AUTODETECT
         else: 
-            if port is None: raise ValueError("When entering a manual port, the port can't be None!") 
+            if port is None: raise ValueError("When entering a port manually, the port can't be None!") 
             self.port = port 
 
         self._sampling_rate = sampling_rate
