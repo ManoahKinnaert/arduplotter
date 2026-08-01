@@ -6,16 +6,17 @@ incomming signals.
 from PySide6.QtCore import QObject, Signal 
 from pyfirmata2 import Arduino
 
-class AruinoListener(QObject):
+from .dynamic_signal import DynamicSignal
 
-    signal = Signal(str, object)
-
+class ArduinoListener(QObject):
     def __init__(self, auto_detect: bool=True, port: str=None, sampling_rate: int=500):
         super().__init__()
 
         if auto_detect:
             self.port = Arduino.AUTODETECT
-        else: self.port = port 
+        else: 
+            if port is None: raise ValueError("When entering a manual port, the port can't be None!") 
+            self.port = port 
 
         self._sampling_rate = sampling_rate
         self._signals = {}
@@ -25,6 +26,9 @@ class AruinoListener(QObject):
 
     @property
     def sampling_rate(self): return self._sampling_rate
+
+    @property 
+    def signals(self): return self._signals.copy()
     
     @sampling_rate.setter 
     def sampling_rate(self, new_rate: int):
@@ -32,10 +36,11 @@ class AruinoListener(QObject):
         self.board.samplingOn(self._sampling_rate)
 
     def add_signal(self, name: str, callback):
-        self._signals[name] = callback
+        dyn_signal = DynamicSignal()
+        dyn_signal.SIGNAL.connect(callback)
+        self._signals[name] = dyn_signal
 
     def emit_signal(self, name: str, value: object):
-        if name in self._signals: self._signals[name](value)
-        self.signal.emit(name, value)
+        if name in self._signals: self._signals[name].emit(value)
 
     def sampling_off(self): self.board.samplingOff()    
