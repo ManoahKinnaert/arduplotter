@@ -38,7 +38,6 @@ class ArduListener(ArduinoListener):
         voltage = value * 5
         self.emit_signal("voltage_data", (time_passed, voltage)) 
 
-
 def main():
     app = QApplication()
 
