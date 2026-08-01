@@ -57,6 +57,6 @@ class ArduinoListener(QObject):
         self._signals[name] = dyn_signal
 
     def emit_signal(self, name: str, value: object):
-        if name in self._signals: self._signals[name].emit(value)
+        if name in self._signals: self._signals[name].SIGNAL.emit(value)
 
-    def sampling_off(self): self.board.samplingOff()    
+    def sampling_off(self): self.board.samplingOff() 
