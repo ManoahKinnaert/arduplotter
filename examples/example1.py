@@ -1,6 +1,4 @@
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QFrame, QLabel
-from PySide6.QtWidgets import QVBoxLayout, QSizePolicy
-
 from arduplotter.arduino import ArduinoListener
 from arduplotter.plots import ChartWidget
 
@@ -47,8 +45,9 @@ def main():
     ardu = ArduListener()
     ardu.add_signal("voltage_data", window.chart_callback)
 
+    ardu.start_sampling()
     app.exec()
-
+    ardu.quit()
 
 if __name__ == "__main__":
     main()

@@ -38,7 +38,6 @@ class ArduinoListener(QObject):
         self._signals = {}
 
         self.board = Arduino(self.port)
-        self.board.samplingOn(self._sampling_rate)  
 
     @property
     def sampling_rate(self): return self._sampling_rate
@@ -59,4 +58,8 @@ class ArduinoListener(QObject):
     def emit_signal(self, name: str, value: object):
         if name in self._signals: self._signals[name].SIGNAL.emit(value)
 
-    def sampling_off(self): self.board.samplingOff() 
+    def start_sampling(self): self.board.samplingOn(self._sampling_rate)
+
+    def sampling_off(self): self.board.samplingOff()
+
+    def quit(self): self.board.exit() 
