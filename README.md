@@ -55,7 +55,7 @@ def main():
     window = MyWindow()
     window.show()
 
-    start_time = time.time()
+    start_time = 0 
 
     def process_data(value):
         time_passed = (time.time() - start_time) * 1000
@@ -65,6 +65,8 @@ def main():
     ardu.configure_analog_pin_for_reporting(pin_number=0, callback=process_data)
 
     ardu.add_signal("voltage_data", window.chart_callback)
+    
+    start_time = time.time()
     ardu.start_sampling()
 
     app.exec()
