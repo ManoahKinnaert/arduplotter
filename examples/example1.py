@@ -6,7 +6,6 @@ import time
 
 START_TIME = time.time()
 ARDU = ArduinoListener()
-INPUT = ARDU.board.analog[0]
 
 class MyWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
@@ -36,8 +35,7 @@ def main():
     window = MyWindow()
     window.show()
 
-    INPUT.register_callback(process_data)
-    INPUT.enable_reporting()
+    ARDU.configure_analog_pin_for_reporting(pin_number=0, callback=process_data)
 
     ARDU.add_signal("voltage_data", window.chart_callback)
     ARDU.start_sampling()

@@ -72,5 +72,12 @@ class ArduinoListener(QObject):
 
     def get_digital_pin(self, number: int): return self.board.digital[number]
 
+    def configure_analog_pin_for_reporting(self, pin_number: int, callback: callable):
+        pin = self.get_analog_pin(pin_number)
+        pin.register_callback(callback)
+        pin.enable_reporting()
+
     @staticmethod
     def pin_supports_pwm(pin: Pin): return pin.PWM_CAPABLE
+
+    
