@@ -1,5 +1,6 @@
 from matplotlib.backends.backend_qtagg import FigureCanvas
 from matplotlib.figure import Figure
+import matplotlib.pyplot as plt 
 
 from .charts import *
 
@@ -49,3 +50,9 @@ class ChartWidget(FigureCanvas):
         axes.relim()
         axes.autoscale_view()
         self.draw_idle()
+
+    @staticmethod
+    def list_available_styles(): print(plt.style.available)
+
+    @staticmethod
+    def set_chart_style(style: str): plt.style.use(style) 

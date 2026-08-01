@@ -15,6 +15,7 @@ class MyWindow(QMainWindow):
         self.setWindowTitle("Plotting example")
         self.setMinimumSize(800, 600)
 
+        ChartWidget.set_chart_style("dark_background")
         self.chart = ChartWidget(5, 4, 100)
         self.chart.add_subplot("potentiometer", "PotentiometerVoltage", "Time (ms)", "Voltage (V)", 111)
         self.chart.add_line_plot("potentiometer", 10)
