@@ -4,9 +4,6 @@ from arduplotter.plots import ChartWidget
 
 import time
 
-START_TIME = time.time()
-ARDU = ArduinoListener()
-
 class MyWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -24,24 +21,27 @@ class MyWindow(QMainWindow):
         self.chart.update_data("potentiometer", data[0], data[1])
 
 
-def process_data(value):
-    time_passed = (time.time() - START_TIME) * 1000
-    voltage = value * 5 
-    ARDU.emit_signal("voltage_data", (time_passed, voltage))
-
 def main():
     app = QApplication()
-
+    ardu = ArduinoListener()
+   
     window = MyWindow()
     window.show()
 
-    ARDU.configure_analog_pin_for_reporting(pin_number=0, callback=process_data)
+    start_time = time.time()
 
-    ARDU.add_signal("voltage_data", window.chart_callback)
-    ARDU.start_sampling()
+    def process_data(value):
+        time_passed = (time.time() - start_time) * 1000
+        voltage = value * 5 
+        ardu.emit_signal("voltage_data", (time_passed, voltage))
+
+    ardu.configure_analog_pin_for_reporting(pin_number=0, callback=process_data)
+
+    ardu.add_signal("voltage_data", window.chart_callback)
+    ardu.start_sampling()
 
     app.exec()
-    ARDU.quit()
+    ardu.quit()
 
 if __name__ == "__main__":
     main()
