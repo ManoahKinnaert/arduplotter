@@ -1,4 +1,8 @@
-from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QFrame, QLabel
+"""
+A simple example of how you can use arduplotter to plot a voltage reading from a potentiometer
+connected to analog port 0 on the Arduino.
+"""
+from PySide6.QtWidgets import QApplication, QMainWindow
 from arduplotter.arduino import ArduinoListener
 from arduplotter.plots import ChartWidget
 
@@ -19,7 +23,6 @@ class MyWindow(QMainWindow):
 
     def chart_callback(self, data):
         self.chart.update_data("potentiometer", data[0], data[1])
-
 
 def main():
     app = QApplication()
